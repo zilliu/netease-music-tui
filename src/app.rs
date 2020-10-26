@@ -6,11 +6,10 @@ use super::model::dj::{DjProgram, DjRadio};
 use super::model::lyric::Lyric;
 use super::model::playlist::{Playlist, Track};
 use super::player::Nplayer;
-use super::ui::circle::{Circle, CIRCLE, CIRCLE_TICK};
+use super::ui::circle::Circle;
 
 use rand::Rng;
 use tui::layout::Rect;
-use tui::style::Color;
 
 const DEFAULT_ROUTE: Route = Route {
     id: RouteId::Home,
@@ -245,7 +244,7 @@ impl App {
             cloud_music: Some(CloudMusic::default()),
             recommend: Recommend { selected_index: 0 },
             my_playlist: Default::default(),
-            repeat_state: RepeatState::All,
+            repeat_state: RepeatState::Shuffle,
             fm_state: false,
             search_results: SearchResult {
                 tracks: None,
@@ -332,21 +331,6 @@ impl App {
                 Some(ms) => ms,
                 None => 0 as u64,
             };
-            let current_route = self.get_current_route();
-            if current_route.active_block == ActiveBlock::Playing {
-                if self.circle_flag {
-                    self.playing_circle = Circle {
-                        circle: &CIRCLE,
-                        color: Color::Reset,
-                    }
-                } else {
-                    self.playing_circle = Circle {
-                        circle: &CIRCLE_TICK,
-                        color: Color::Cyan,
-                    }
-                }
-                self.circle_flag = !self.circle_flag;
-            }
             match &self.lyric {
                 Some(lyrics) => {
                     let next_lyric = lyrics.get(self.lyric_index + 1);
