@@ -5,3 +5,6 @@ cookie
 test.log
 Cargo.lock
 .idea
+GPATH
+GRTAGS
+GTAGS
