@@ -768,8 +768,13 @@ impl App {
                         }
                     }
                     None => {
+                        let current_block = self.get_current_route().active_block;
                         self.msg = "get track url failed".to_string();
                         self.set_current_route_state(Some(ActiveBlock::Msg), None);
+                        // if get track failed outside search result, skip to next track
+                        if current_block != ActiveBlock::SearchResult {
+                            self.skip_track(TrackState::Forword);
+                        }
                     }
                 };
             }
